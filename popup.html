@@ -1,0 +1,100 @@
+<!doctype html>
+<!-- Copyright (c) 2018 Trevor Siemens. -->
+<!--
+ This page is shown when the extension button is clicked, because the
+ "browser_action" field in manifest.json contains the "default_popup" key with
+ value "popup.html".
+ -->
+<html>
+  <head>
+    <title>Tab Deduper Popup</title>
+    <style type="text/css">
+      body {
+        margin: 10px;
+        white-space: nowrap;
+      }
+
+      h1 {
+        font-size: 15px;
+      }
+
+      #container {
+         width: 250pt;
+      }
+
+      .short-w {
+         max-width: 250pt;
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+      }
+      .group-header {
+         padding: 2px;
+         background-color: #0098FE;
+         border-radius: 3pt;
+         color: white;
+         font-weight: bold;
+         font-size: small;
+         margin-bottom: 2pt;
+         padding: 3pt;
+         padding-left: 8pt;
+      }
+      .tab-list-grp {
+         padding: 2px;
+      }
+      .tab-list-item {
+         margin: 1px;
+         margin-bottom: 3px;
+         padding: 2px;
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         border-radius: 3pt;
+      }
+
+      .tab-icon {
+         margin: 1pt;
+         width: 16px;
+      }
+      .tab-icon-title-grp {
+         display: flex;
+         align-items: center;
+      }
+
+      .kill-tab-button {
+        display: inline-block;
+        padding: 2pt 5pt;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        outline: none;
+        color: #bbb;
+        background-color: #00000000;
+        font-weight: bolder;
+        border: none;
+        border-radius: 3pt;
+        margin-left: 10pt;
+      }
+      .kill-tab-button:hover {background-color: #ddd}
+    </style>
+
+    <!--
+      - JavaScript and HTML must be in separate files: see the Content Security
+      - Policy documentation[1] for details and explanation.
+      -
+      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+    -->
+    <script src="utils.js"></script>
+    <script src="popup.js"></script>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="group-header">Tabs</div>
+      <div id="tab_list" class="short-w tab-list-grp">
+      </div>
+    </div>
+  </body>
+</html>
