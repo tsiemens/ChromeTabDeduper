@@ -1,0 +1,12 @@
+/* Copyright (c) 2018 Trevor Siemens. */
+.group-header {
+   padding: 2px;
+   background-color: #0098FE;
+   border-radius: 3pt;
+   color: white;
+   font-weight: bold;
+   font-size: small;
+   margin-bottom: 2pt;
+   padding: 3pt;
+   padding-left: 8pt;
+}

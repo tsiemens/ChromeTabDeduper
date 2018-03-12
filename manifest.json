@@ -16,6 +16,7 @@
       "scripts": ["utils.js", "eventPage.js"],
       "persistent": false
    },
+   "options_page": "options.html",
    "permissions": [
       "tabs",
       "activeTab",

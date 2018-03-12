@@ -16,6 +16,7 @@ chrome.tabs.onRemoved.addListener(function(tabId, ri) {
 });
 
 function reloadTabList() {
+   console.log("reloadTabList");
    getDuplicateTabs((resArr) => {
       var tabList = document.getElementById('tab_list');
       // Clear the list
@@ -39,7 +40,14 @@ function reloadTabList() {
             onDeleteClick(d.target);
          });
       }
+
+      if (buttons.length == 0) {
+         tabList.innerHTML +=
+            '<div class="no-tabs-item">No duplicate tabs</div>';
+      }
    });
 }
 
-reloadTabList();
+updateOptionCache(() => {
+   reloadTabList();
+});

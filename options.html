@@ -1,0 +1,119 @@
+<!doctype html>
+<!-- Copyright (c) 2018 Trevor Siemens. -->
+<html>
+  <head>
+    <title>Tab Deduper Options</title>
+    <link rel="stylesheet" href="common_styles.css">
+    <style type="text/css">
+      body {
+        margin: 10px;
+        white-space: nowrap;
+      }
+
+      h1 {
+        font-size: 15pt;
+      }
+      h2 {
+        font-size: 13pt;
+      }
+
+      #container {
+         width: 85%;
+      }
+
+      .button-base {
+        display: inline-block;
+        padding: 5pt 10pt;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        outline: none;
+        color: grey;
+        background-color: #ddd;
+        font-weight: bolder;
+        border: none;
+        border-radius: 3pt;
+      }
+      .button-base:hover {background-color: #bbb}
+
+      .save-button {
+        color: white;
+        background-color: #0098FE;
+      }
+      .save-button:hover {background-color: #115dc5}
+      .save-button:active {background-color: #0b3d81}
+
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+        position: relative;
+        margin-bottom: 12px;
+        margin-top: 12px;
+        font-size: 11pt;
+        cursor: pointer;
+        user-select: none;
+      }
+
+    </style>
+
+    <!--
+      - JavaScript and HTML must be in separate files: see the Content Security
+      - Policy documentation[1] for details and explanation.
+      -
+      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+    -->
+    <script src="utils.js"></script>
+    <script src="options.js"></script>
+  </head>
+
+  <body>
+    <h1>Tab Deduper Options</h1>
+    <div id="container">
+      <div class="group-header">Global Options</div>
+
+      <div>
+        <label class="checkbox-container">
+          <input id="use-title-default-checkbox" type="checkbox" checked="checked">
+          Use tab title to dedup by default
+        </label>
+      </div>
+
+      <div class="group-header">URL Exemptions</div>
+      <h2>By Domain</h2>
+        <div style="margin-bottom:5pt">
+        <input type="text" placeholder="eg. somedomain.com">
+        <button class="button-base">Add</button>
+        </div>
+
+        <h2>By URL RegExp</h2>
+        <div style="margin-bottom:5pt">
+        <input type="text" placeholder="eg. ^somedomain\.com">
+        <button class="button-base">Add</button>
+        </div>
+
+      <div class="group-header">URL Tranforms</div>
+      <div style="margin-bottom:5pt">
+        <input type="text" placeholder="pattern">
+        -&gt;
+        <input type="text" placeholder="replacement pattern">
+        <button class="button-base">Add</button>
+      </div>
+
+      <div class="group-header">Title Use Overrides</div>
+      <div style="margin-bottom:5pt">
+        <h2>By Domain</h2>
+        <input type="text" placeholder="eg. somedomain.com">
+        <button class="button-base">Add</button>
+
+        <h2>By URL RegExp</h2>
+        <input type="text" placeholder="eg. ^somedomain\.com">
+        <button class="button-base">Add</button>
+      </div>
+      <div>
+         <button id="save-button" class="button-base save-button">Save</button>
+      </div>
+    </div>
+  </body>
+</html>

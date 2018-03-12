@@ -21,7 +21,17 @@ chrome.tabs.onActivated.addListener(function(activeInfo) {
 chrome.windows.onFocusChanged.addListener(function(window_) {
    handleTab();
 });
-chrome.runtime.onInstalled.addListener((details) => { handleTab(); });
+chrome.runtime.onInstalled.addListener((details) => {
+   updateOptionCache(() => {
+      handleTab();
+   });
+});
+
+chrome.storage.onChanged.addListener((changes, areaName) => {
+   updateOptionCache(() => {
+      handleTab();
+   });
+});
 
 // chrome.webNavigation.onCommitted.addListener(function (details) {
    // console.log("naved!");

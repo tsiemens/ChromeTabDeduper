@@ -1,4 +1,4 @@
-# ChromeTabDeduper
+# Tab Deduper - A Chrome Extension
 A Chome extension for deduplicating tabs
 
 ## Why Another of these?
