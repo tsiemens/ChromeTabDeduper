@@ -16,6 +16,9 @@
       h2 {
         font-size: 13pt;
       }
+      p {
+        white-space: normal;
+      }
 
       #container {
          width: 85%;
@@ -56,6 +59,13 @@
         user-select: none;
       }
 
+      .scrollable-textbox {
+         height: 100pt;
+         width: 300pt;
+         overflow: scroll;
+         white-space: nowrap;
+      }
+
     </style>
 
     <!--
@@ -71,6 +81,14 @@
   <body>
     <h1>Tab Deduper Options</h1>
     <div id="container">
+
+      <h2>Pattern Rules</h2>
+      <p>Below, each text box can have one pattern per line.
+      Unless otherwise specified, each line can either be:<br>
+      &nbsp;&nbsp;- A simple text match on the URL, starting from the beginning of the domain.<br>
+      &nbsp;&nbsp;- A regular expression, marked with a backtick (`) at the begginning of the line.
+      </p>
+
       <div class="group-header">Global Options</div>
 
       <div>
@@ -81,37 +99,33 @@
       </div>
 
       <div class="group-header">URL Exemptions</div>
-      <h2>By Domain</h2>
-        <div style="margin-bottom:5pt">
-        <input type="text" placeholder="eg. somedomain.com">
-        <button class="button-base">Add</button>
-        </div>
+      <div style="margin:5pt">
+        <textarea id="url-exempt-tb" class="scrollable-textbox"
+                  placeholder="eg. somedomain.com or `^somedomain\.com"></textarea>
+      </div>
 
-        <h2>By URL RegExp</h2>
-        <div style="margin-bottom:5pt">
-        <input type="text" placeholder="eg. ^somedomain\.com">
-        <button class="button-base">Add</button>
-        </div>
-
-      <div class="group-header">URL Tranforms</div>
-      <div style="margin-bottom:5pt">
-        <input type="text" placeholder="pattern">
-        -&gt;
-        <input type="text" placeholder="replacement pattern">
-        <button class="button-base">Add</button>
+      <div style="margin-bottom:5pt" class="group-header">URL Tranforms</div>
+      One pattern`replacement per line. Separate with a backtick.
+      <div style="margin:5pt">
+        <textarea id="url-transform-tb" class="scrollable-textbox"
+                  placeholder="eg. ^(.*)\.somedomain\.com`$1.foo.com"></textarea>
       </div>
 
       <div class="group-header">Title Use Overrides</div>
-      <div style="margin-bottom:5pt">
-        <h2>By Domain</h2>
-        <input type="text" placeholder="eg. somedomain.com">
-        <button class="button-base">Add</button>
+      <div style="margin:5pt">
+        <h2>Use title</h2>
+        <div style="margin-bottom:5pt">
+          <textarea id="use-title-override-tb" class="scrollable-textbox"
+                    placeholder="eg. somedomain.com or `^somedomain\.com"></textarea>
+        </div>
 
-        <h2>By URL RegExp</h2>
-        <input type="text" placeholder="eg. ^somedomain\.com">
-        <button class="button-base">Add</button>
+        <h2>No not use title</h2>
+        <div style="margin:5pt">
+          <textarea id="no-use-title-override-tb" class="scrollable-textbox"
+                    placeholder="eg. somedomain.com or `^somedomain\.com"></textarea>
+        </div>
       </div>
-      <div>
+      <div style="margin-top:10pt">
          <button id="save-button" class="button-base save-button">Save</button>
       </div>
     </div>
