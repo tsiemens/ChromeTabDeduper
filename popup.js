@@ -17,6 +17,10 @@ chrome.tabs.onRemoved.addListener(function(tabId, ri) {
 
 function reloadTabList() {
    console.log("reloadTabList");
+   if (!optionCacheInitialized) {
+      console.warn("Options cache not yet initialized");
+      return;
+   }
    getDuplicateTabs((resArr) => {
       var tabList = document.getElementById('tab_list');
       // Clear the list
