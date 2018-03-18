@@ -1,5 +1,10 @@
 // Copyright (c) 2018 Trevor Siemens.
 
+updateOptionCache(() => {
+   ftrace();
+   handleTab();
+});
+
 chrome.tabs.onCreated.addListener(function(tab) {
    handleTab();
 });
@@ -22,12 +27,14 @@ chrome.windows.onFocusChanged.addListener(function(window_) {
    handleTab();
 });
 chrome.runtime.onInstalled.addListener((details) => {
+   ftrace();
    updateOptionCache(() => {
       handleTab();
    });
 });
 
 chrome.storage.onChanged.addListener((changes, areaName) => {
+   ftrace();
    updateOptionCache(() => {
       handleTab();
    });

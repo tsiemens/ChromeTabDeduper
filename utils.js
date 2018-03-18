@@ -1,5 +1,11 @@
 // Copyright (c) 2018 Trevor Siemens.
 
+function ftrace() {
+   var err = new Error();
+   stacks = err.stack.split('\n');
+   console.log(stacks[2].replace(/^ *at */, ''))
+}
+
 // local storage settings
 var useTitleDefaultOpt = 'useTitleDefault'; // bool
 var ignoreFragmentDefaultOpt = 'ignoreFragmentDefault'; // bool
@@ -253,7 +259,7 @@ function getDuplicateTabs(func) {
 }
 
 function handleTab() {
-   console.log("handleTab");
+   ftrace()
    if (!optionCacheInitialized) {
       console.warn("Options cache not yet initialized");
       return;
