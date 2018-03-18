@@ -114,10 +114,13 @@ function findMatchingRule(url, rules) {
       var m = url.match(rule.pattern);
       if (m) {
          if (typeof(rule.pattern) === "string") {
+            // The pattern is just a string, which must match
+            // at the beginning of the url.
             if (m.index === 0) {
                return rule;
             }
          } else {
+            // The pattern was a regexp, so any match is ok
             return rule;
          }
       }
@@ -216,9 +219,13 @@ function getTabDedupId(tab) {
    }
 
    // Tranform
-   var transform = findMatchingRule(finalUrl, optionCache[urlTransformOpt]);
-   if (transform !== null) {
-      finalUrl = finalUrl.replace(transform.pattern, transform.sub);
+   var transforms = optionCache[urlTransformOpt];
+   for (var i = 0; i < transforms.length; i++) {
+      var tf = transforms[i];
+      var m = finalUrl.match(tf.pattern);
+      if (m) {
+         finalUrl = finalUrl.replace(tf.pattern, tf.sub);
+      }
    }
 
    return finalUrl + '#*#*#' + sanTitle;
