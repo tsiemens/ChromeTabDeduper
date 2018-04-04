@@ -1,3 +1,6 @@
 # Vim
 *.swp
 *.swo
+
+# Build files
+TabDeduper.zip
