@@ -210,7 +210,7 @@ function getTabDedupId(tab) {
    var fragOverride = findMatchingRule(baseUrl, optionCache[fragmentOverrideOpt]);
    var removeFrag = false;
    if (fragOverride !== null) {
-      removeFrag = !fragOverride.negate
+      removeFrag = fragOverride.negate
    } else {
       removeFrag = optionCache[ignoreFragmentDefaultOpt];
    }
