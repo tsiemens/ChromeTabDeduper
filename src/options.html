@@ -48,6 +48,13 @@
       .save-button:hover {background-color: #115dc5}
       .save-button:active {background-color: #0b3d81}
 
+      .test-button {
+        color: white;
+        background-color: #fe8600;
+      }
+      .test-button:hover {background-color: #cb6c02}
+      .test-button:active {background-color: #814400}
+
       .checkbox-container {
         display: flex;
         align-items: center;
@@ -135,8 +142,22 @@
                   placeholder="eg. ^(.*)\.somedomain\.com`$1.foo.com"></textarea>
       </div>
 
-      <div style="margin-top:10pt">
+      <div style="margin-top:10pt; margin-bottom:20pt">
          <button id="save-button" class="button-base save-button">Save</button>
+      </div>
+
+      <div class="group-header bg-secondary">Try URL Conversions</div>
+      Try out how URL transforms and fragment overrides affect any URL.<br/>
+      Enter a URL and hit <b>Convert</b> to see how it will be represented<br/>
+      when compared against other URL representations.
+      <div style="margin-top:10pt">
+         <input id="convert-sample-url-text" type="text" placeholder="somedomain.com/path#frag"
+                style="width:300px" />
+          &nbsp;-&gt;&nbsp;
+         <div id="convert-test-result" style="display:inline-block"></div>
+      </div>
+      <div style="margin-top:10pt">
+         <button id="convert-test-button" class="button-base test-button">Convert</button>
       </div>
 
     </div>

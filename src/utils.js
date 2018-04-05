@@ -187,27 +187,12 @@ function stripFragment(url) {
    return m[1];
 }
 
-function getTabDedupId(tab) {
-   // https://developer.chrome.com/extensions/tabs#type-Tab
-   var baseUrl = afterHttp(tab.url);
-   var finalUrl = baseUrl;
-   var sanTitle = '';
-
-   // Title
-   var titleOverride = findMatchingRule(baseUrl, optionCache[titleOverrideOpt]);
-   var useTitle = false;
-   if (titleOverride !== null) {
-      // Negated title overrides disable title use
-      useTitle = !titleOverride.negate;
-   } else {
-      useTitle = optionCache[useTitleDefaultOpt];
-   }
-   if (useTitle) {
-      sanTitle = tab.title.replace(/#\*#\*#/g, '');
-   }
+// The url must be pre-sanitized (run afterHttp on it)
+function getUrlDedupIdPart(url) {
+   var finalUrl = url;
 
    // Fragment
-   var fragOverride = findMatchingRule(baseUrl, optionCache[fragmentOverrideOpt]);
+   var fragOverride = findMatchingRule(url, optionCache[fragmentOverrideOpt]);
    var removeFrag = false;
    if (fragOverride !== null) {
       removeFrag = fragOverride.negate
@@ -227,6 +212,28 @@ function getTabDedupId(tab) {
          finalUrl = finalUrl.replace(tf.pattern, tf.sub);
       }
    }
+   return finalUrl;
+}
+
+function getTabDedupId(tab) {
+   // https://developer.chrome.com/extensions/tabs#type-Tab
+   var baseUrl = afterHttp(tab.url);
+
+   // Title
+   var sanTitle = '';
+   var titleOverride = findMatchingRule(baseUrl, optionCache[titleOverrideOpt]);
+   var useTitle = false;
+   if (titleOverride !== null) {
+      // Negated title overrides disable title use
+      useTitle = !titleOverride.negate;
+   } else {
+      useTitle = optionCache[useTitleDefaultOpt];
+   }
+   if (useTitle) {
+      sanTitle = tab.title.replace(/#\*#\*#/g, '');
+   }
+
+   var finalUrl = getUrlDedupIdPart(baseUrl);
 
    return finalUrl + '#*#*#' + sanTitle;
 }
