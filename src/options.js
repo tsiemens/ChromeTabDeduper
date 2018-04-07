@@ -13,12 +13,12 @@ function saveAllOptions() {
    var urlTranformTb = ebi("url-transform-tb");
 
    var kvs = {};
-   kvs[useTitleDefaultOpt] = useTitleCb.checked;
-   kvs[ignoreFragmentDefaultOpt] = ignoreFragCb.checked;
-   kvs[urlExemptsOpt] = urlExemptTb.value;
-   kvs[titleOverrideOpt] = titleOverrideTb.value;
-   kvs[fragmentOverrideOpt] = fragOverrideTb.value;
-   kvs[urlTransformOpt] = urlTranformTb.value;
+   kvs[EOpt.useTitleDefault] = useTitleCb.checked;
+   kvs[EOpt.ignoreFragmentDefault] = ignoreFragCb.checked;
+   kvs[EOpt.urlExempts] = urlExemptTb.value;
+   kvs[EOpt.titleOverride] = titleOverrideTb.value;
+   kvs[EOpt.fragmentOverride] = fragOverrideTb.value;
+   kvs[EOpt.urlTransform] = urlTranformTb.value;
 
    setOptions(kvs, () => {
       updateOptionCache(() => {
@@ -29,30 +29,30 @@ function saveAllOptions() {
 
 function loadAllOptions() {
    getOptions([
-      useTitleDefaultOpt,
-      ignoreFragmentDefaultOpt,
-      urlExemptsOpt,
-      titleOverrideOpt,
-      fragmentOverrideOpt,
-      urlTransformOpt
+      EOpt.useTitleDefault,
+      EOpt.ignoreFragmentDefault,
+      EOpt.urlExempts,
+      EOpt.titleOverride,
+      EOpt.fragmentOverride,
+      EOpt.urlTransform
      ], (items) => {
       var useTitleCb = ebi('use-title-default-checkbox');
-      useTitleCb.checked = items[useTitleDefaultOpt];
+      useTitleCb.checked = items[EOpt.useTitleDefault];
 
       var ignoreFragCb = ebi('ignore-fragment-default-checkbox');
-      ignoreFragCb.checked = items[ignoreFragmentDefaultOpt];
+      ignoreFragCb.checked = items[EOpt.ignoreFragmentDefault];
 
       var urlExemptTb = ebi("url-exempt-tb");
-      urlExemptTb.value = items[urlExemptsOpt];
+      urlExemptTb.value = items[EOpt.urlExempts];
 
       var titleOverrideTb = ebi("title-override-tb");
-      titleOverrideTb.value = items[titleOverrideOpt];
+      titleOverrideTb.value = items[EOpt.titleOverride];
 
       var fragOverrideTb = ebi("fragment-override-tb");
-      fragOverrideTb.value = items[fragmentOverrideOpt];
+      fragOverrideTb.value = items[EOpt.fragmentOverride];
 
       var urlTranformTb = ebi("url-transform-tb");
-      urlTranformTb.value = items[urlTransformOpt];
+      urlTranformTb.value = items[EOpt.urlTransform];
    });
 }
 

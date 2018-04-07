@@ -7,24 +7,26 @@ function ftrace() {
 }
 
 // local storage settings
-var useTitleDefaultOpt = 'useTitleDefault'; // bool
-var ignoreFragmentDefaultOpt = 'ignoreFragmentDefault'; // bool
-var urlExemptsOpt = 'urlExempts' // list of urls or regexeps
-var titleOverrideOpt = 'titleOverrides'; // list of urls or regexps
-var fragmentOverrideOpt = 'fragmentOverrides'; // list of urls or regexps
-var urlTransformOpt = 'urlTranforms'; // list of pattern and replacement
+var EOpt = {
+   useTitleDefault: 'useTitleDefault', // bool
+   ignoreFragmentDefault: 'ignoreFragmentDefault', // bool
+   urlExempts: 'urlExempts', // list of urls or regexeps
+   titleOverride: 'titleOverrides', // list of urls or regexps
+   fragmentOverride: 'fragmentOverrides', // list of urls or regexps
+   urlTransform: 'urlTranforms' // list of pattern and replacement
+};
 
 function getOptionDefault(prop) {
    var defaultVal = undefined;
    switch(prop) {
-    case useTitleDefaultOpt:
-    case ignoreFragmentDefaultOpt:
+    case EOpt.useTitleDefault:
+    case EOpt.ignoreFragmentDefault:
       defaultVal = true;
       break;
-    case urlExemptsOpt:
-    case titleOverrideOpt:
-    case fragmentOverrideOpt:
-    case urlTransformOpt:
+    case EOpt.urlExempts:
+    case EOpt.titleOverride:
+    case EOpt.fragmentOverride:
+    case EOpt.urlTransform:
       defaultVal = '';
       break;
     default:
@@ -133,35 +135,35 @@ var optionCacheInitialized = false;
 // callback is optional
 function updateOptionCache(callback) {
    getOptions([
-      useTitleDefaultOpt,
-      ignoreFragmentDefaultOpt,
-      urlExemptsOpt,
-      titleOverrideOpt,
-      fragmentOverrideOpt,
-      urlTransformOpt
+      EOpt.useTitleDefault,
+      EOpt.ignoreFragmentDefault,
+      EOpt.urlExempts,
+      EOpt.titleOverride,
+      EOpt.fragmentOverride,
+      EOpt.urlTransform
      ], (items) => {
 
-      optionCache[useTitleDefaultOpt] = items[useTitleDefaultOpt];
-      optionCache[ignoreFragmentDefaultOpt] = items[ignoreFragmentDefaultOpt];
+      optionCache[EOpt.useTitleDefault] = items[EOpt.useTitleDefault];
+      optionCache[EOpt.ignoreFragmentDefault] = items[EOpt.ignoreFragmentDefault];
 
-      optionCache[urlExemptsOpt] = linesToUrlRules(getSanitizedLines(
-         items[urlExemptsOpt]
+      optionCache[EOpt.urlExempts] = linesToUrlRules(getSanitizedLines(
+         items[EOpt.urlExempts]
       ));
-      optionCache[titleOverrideOpt] = linesToUrlRules(getSanitizedLines(
-         items[titleOverrideOpt]
+      optionCache[EOpt.titleOverride] = linesToUrlRules(getSanitizedLines(
+         items[EOpt.titleOverride]
       ));
-      optionCache[fragmentOverrideOpt] = linesToUrlRules(getSanitizedLines(
-         items[fragmentOverrideOpt]
+      optionCache[EOpt.fragmentOverride] = linesToUrlRules(getSanitizedLines(
+         items[EOpt.fragmentOverride]
       ));
 
-      var sanReplacedLines = getSanitizedLines(items[urlTransformOpt]);
+      var sanReplacedLines = getSanitizedLines(items[EOpt.urlTransform]);
       var transforms = [];
       sanReplacedLines.forEach((line) => {
          if (isValidUrlTransformLine(line)) {
             transforms.push(new UrlTransform(line));
          }
       });
-      optionCache[urlTransformOpt] = transforms;
+      optionCache[EOpt.urlTransform] = transforms;
 
       optionCacheInitialized = true;
       if (callback) {
@@ -192,19 +194,19 @@ function getUrlDedupIdPart(url) {
    var finalUrl = url;
 
    // Fragment
-   var fragOverride = findMatchingRule(url, optionCache[fragmentOverrideOpt]);
+   var fragOverride = findMatchingRule(url, optionCache[EOpt.fragmentOverride]);
    var removeFrag = false;
    if (fragOverride !== null) {
       removeFrag = fragOverride.negate
    } else {
-      removeFrag = optionCache[ignoreFragmentDefaultOpt];
+      removeFrag = optionCache[EOpt.ignoreFragmentDefault];
    }
    if (removeFrag) {
       finalUrl = stripFragment(finalUrl);
    }
 
    // Tranform
-   var transforms = optionCache[urlTransformOpt];
+   var transforms = optionCache[EOpt.urlTransform];
    for (var i = 0; i < transforms.length; i++) {
       var tf = transforms[i];
       var m = finalUrl.match(tf.pattern);
@@ -221,13 +223,13 @@ function getTabDedupId(tab) {
 
    // Title
    var sanTitle = '';
-   var titleOverride = findMatchingRule(baseUrl, optionCache[titleOverrideOpt]);
+   var titleOverride = findMatchingRule(baseUrl, optionCache[EOpt.titleOverride]);
    var useTitle = false;
    if (titleOverride !== null) {
       // Negated title overrides disable title use
       useTitle = !titleOverride.negate;
    } else {
-      useTitle = optionCache[useTitleDefaultOpt];
+      useTitle = optionCache[EOpt.useTitleDefault];
    }
    if (useTitle) {
       sanTitle = tab.title.replace(/#\*#\*#/g, '');
@@ -249,7 +251,7 @@ function getDuplicateTabs(func) {
    chrome.tabs.query({"currentWindow": true}, function(resArr){
       resArr.forEach((t) => {
          var url = afterHttp(t.url);
-         var exemptRule = findMatchingRule(url, optionCache[urlExemptsOpt]);
+         var exemptRule = findMatchingRule(url, optionCache[EOpt.urlExempts]);
          if (exemptRule === null) {
             var dedupId = getTabDedupId(t);
             console.log("DedupId: " + dedupId);
