@@ -85,7 +85,9 @@ function reloadTabList() {
    });
 }
 
-updateOptionCache(() => {
+updateOptionCache((errors) => {
+   var warningBubble = ebi("options-error");
+   warningBubble.style.display = errors === null ? 'none' : 'unset';
    reloadTabList();
 });
 

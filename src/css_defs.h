@@ -14,16 +14,17 @@
 #define APP_ORANGE_HOVER #cb6c02
 #define APP_ORANGE_CLICK #814400
 
-#define HEADER_CSS_CLASS(_bgColor) {       \
-   padding: 2px;                           \
-   background-color: _bgColor;             \
-   border-radius: 3pt;                     \
-   color: white;                           \
-   font-weight: bold;                      \
-   font-size: small;                       \
-   margin-bottom: 2pt;                     \
-   padding: 3pt;                           \
-   padding-left: 8pt;                      \
+#define HEADER_CSS_CLASS(_bgColor,_extras) { \
+   padding: 2px; \
+   background-color: _bgColor; \
+   border-radius: 3pt; \
+   color: white; \
+   font-weight: bold; \
+   font-size: small; \
+   margin-bottom: 2pt; \
+   padding: 3pt; \
+   padding-left: 8pt; \
+   _extras \
 }
 
 #endif // CSS_DEFS_H
