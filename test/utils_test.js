@@ -82,3 +82,52 @@ QUnit.test("getUrlDedupIdPart test", (assert) => {
       done();
    });
 });
+
+QUnit.test("getTabDedupId test", (assert) => {
+   var done = assert.async();
+   updateOptionCache(() => {
+      optionCache[EOpt.ignoreFragmentDefault] = true,
+      optionCache[EOpt.urlTransform] = [new UrlTransform('foo`bar')];
+      optionCache[EOpt.useTitleDefault] = true;
+      assert.equal(
+         getTabDedupId({url:"https://foo.com#foo", title: "Hi!"}),
+         "bar.com#*#*#Hi!");
+      optionCache[EOpt.useTitleDefault] = false;
+      assert.equal(
+         getTabDedupId({url:"https://foo.com#foo", title: "Hi!"}),
+         "bar.com#*#*#");
+
+      optionCache[EOpt.titleOverride] = [new UrlRule('foo')];
+      optionCache[EOpt.useTitleDefault] = true;
+      assert.equal(
+         getTabDedupId({url:"http://foo.com#foo", title: "Hi!"}),
+         "bar.com#*#*#Hi!");
+      optionCache[EOpt.useTitleDefault] = false;
+      assert.equal(
+         getTabDedupId({url:"http://foo.com#foo", title: "Hi!"}),
+         "bar.com#*#*#Hi!");
+
+      optionCache[EOpt.titleOverride] = [new UrlRule('-foo')];
+      optionCache[EOpt.useTitleDefault] = true;
+      assert.equal(
+         getTabDedupId({url:"http://foo.com#foo", title: "Hi!"}),
+         "bar.com#*#*#");
+      optionCache[EOpt.useTitleDefault] = false;
+      assert.equal(
+         getTabDedupId({url:"http://foo.com#foo", title: "Hi!"}),
+         "bar.com#*#*#");
+
+      optionCache[EOpt.titleOverride] = [new UrlRule('-`^foo')];
+      optionCache[EOpt.useTitleDefault] = true;
+      assert.equal(
+         getTabDedupId({url:"http://foo.com#foo", title: "Hi!"}),
+         "bar.com#*#*#");
+      optionCache[EOpt.titleOverride] = [new UrlRule('`^foo')];
+      optionCache[EOpt.useTitleDefault] = false;
+      assert.equal(
+         getTabDedupId({url:"http://foo.com#foo", title: "Hi!"}),
+         "bar.com#*#*#Hi!");
+
+      done();
+   });
+});
