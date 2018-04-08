@@ -1,8 +1,35 @@
 // Copyright (c) 2018 Trevor Siemens.
 #include "utils.js"
 
-function ebi(id) {
-   return document.getElementById(id);
+function setOptionErrorText(errors, errPar) {
+   var errHtmls = [];
+   if (errors !== null && errors !== undefined) {
+      errors.forEach((e) => {
+         errHtmls.push(escapeHtml(e));
+      });
+   }
+   errPar.innerHTML = errHtmls.join('<br/>');
+}
+
+function setOptionsErrorTexts(errors) {
+   setOptionErrorText(
+      errors === null ? null : errors[EOpt.urlExempts],
+      ebi("url-exempt-errors"));
+
+   setOptionErrorText(
+      errors === null ? null : errors[EOpt.titleOverride],
+      ebi("title-override-errors"));
+
+   setOptionErrorText(
+      errors === null ? null : errors[EOpt.fragmentOverride],
+      ebi("fragment-override-errors"));
+
+   setOptionErrorText(
+      errors === null ? null : errors[EOpt.urlTransform],
+      ebi("url-transform-errors"));
+
+   var saveErrors = ebi("save-errors");
+   saveErrors.textContent = errors !== null ? "[ ! ] Errors found" : "";
 }
 
 function saveAllOptions() {
@@ -22,7 +49,8 @@ function saveAllOptions() {
    kvs[EOpt.urlTransform] = urlTranformTb.value;
 
    setOptions(kvs, () => {
-      updateOptionCache(() => {
+      updateOptionCache((errors) => {
+         setOptionsErrorTexts(errors);
          handleTab();
       });
    });
@@ -54,6 +82,10 @@ function loadAllOptions() {
 
       var urlTranformTb = ebi("url-transform-tb");
       urlTranformTb.value = items[EOpt.urlTransform];
+
+      updateOptionCache((errors) => {
+         setOptionsErrorTexts(errors);
+      });
    });
 }
 

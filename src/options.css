@@ -21,6 +21,10 @@ ID(container) {
    width: 85%;
 }
 
+.error-txt {
+   color: red;
+}
+
 .button-base {
   display: inline-block;
   padding: 5pt 10pt;

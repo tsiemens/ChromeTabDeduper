@@ -8,6 +8,17 @@ function ftrace() {
    console.log(stacks[2].replace(/^ *at */, ''))
 }
 
+function escapeHtml(html) {
+    var text = document.createTextNode(html);
+    var div = document.createElement('div');
+    div.appendChild(text);
+    return div.innerHTML;
+}
+
+function ebi(id) {
+   return document.getElementById(id);
+}
+
 // local storage settings
 var EOpt = {
    useTitleDefault: 'useTitleDefault', // bool
@@ -68,32 +79,65 @@ function updateOptionCache(callback) {
       EOpt.fragmentOverride,
       EOpt.urlTransform
      ], (items) => {
+      var errors = null;
 
       optionCache[EOpt.useTitleDefault] = items[EOpt.useTitleDefault];
       optionCache[EOpt.ignoreFragmentDefault] = items[EOpt.ignoreFragmentDefault];
 
-      optionCache[EOpt.urlExempts] = linesToUrlRules(getSanitizedLines(
-         items[EOpt.urlExempts]
-      ));
-      optionCache[EOpt.titleOverride] = linesToUrlRules(getSanitizedLines(
-         items[EOpt.titleOverride]
-      ));
-      optionCache[EOpt.fragmentOverride] = linesToUrlRules(getSanitizedLines(
-         items[EOpt.fragmentOverride]
-      ));
-
-      var sanReplacedLines = getSanitizedLines(items[EOpt.urlTransform]);
-      var transforms = [];
-      sanReplacedLines.forEach((line) => {
-         if (isValidUrlTransformLine(line)) {
-            transforms.push(new UrlTransform(line));
+      var updateOrCatch = (key, func) => {
+         try {
+            func();
+         } catch (err) {
+            if (errors == null) {
+               errors = {};
+            }
+            if (err.forEach === undefined) {
+               err = [err];
+            }
+            errors[key] = err;
          }
+      };
+
+      updateOrCatch(EOpt.urlExempts, () => {
+         optionCache[EOpt.urlExempts] = linesToUrlRules(getSanitizedLines(
+            items[EOpt.urlExempts]
+         ));
       });
-      optionCache[EOpt.urlTransform] = transforms;
+
+      updateOrCatch(EOpt.titleOverride, () => {
+         optionCache[EOpt.titleOverride] = linesToUrlRules(getSanitizedLines(
+            items[EOpt.titleOverride]
+         ));
+      });
+      updateOrCatch(EOpt.fragmentOverride, () => {
+         optionCache[EOpt.fragmentOverride] = linesToUrlRules(getSanitizedLines(
+            items[EOpt.fragmentOverride]
+         ));
+      });
+
+      updateOrCatch(EOpt.urlTransform, () => {
+         var sanReplacedLines = getSanitizedLines(items[EOpt.urlTransform]);
+         var transforms = [];
+         var tErrors = null;
+         sanReplacedLines.forEach((line) => {
+            try {
+               transforms.push(new UrlTransform(line));
+            } catch (err) {
+               if (tErrors === null) {
+                  tErrors = [];
+               }
+               tErrors.push(err);
+            }
+         });
+         if (tErrors !== null) {
+            throw tErrors;
+         }
+         optionCache[EOpt.urlTransform] = transforms;
+      });
 
       optionCacheInitialized = true;
       if (callback) {
-         callback();
+         callback(errors);
       }
    });
 }
@@ -135,14 +179,21 @@ class UrlRule {
 // Lines must be pre-sanitized
 function linesToUrlRules(lines) {
    var rules = []
+   var errors = null;
    lines.forEach((line) => {
-      rules.push(new UrlRule(line));
+      try {
+         rules.push(new UrlRule(line));
+      } catch (err) {
+         if (errors === null) {
+            errors = [];
+         }
+         errors.push(err);
+      }
    });
+   if (errors !== null) {
+      throw errors;
+   }
    return rules;
-}
-
-function isValidUrlTransformLine(line) {
-   return line.match(/^[^`]+`/);
 }
 
 class UrlTransform {
@@ -150,7 +201,7 @@ class UrlTransform {
       // Produces 'xxx`yyy`g' -> ["xxx", "yyy", "g"]
       var groups = line.split('`');
       if (groups.length < 2) {
-         throw "Insufficient groups in " + line;
+         throw "Insufficient ` (backtick) separated groups in " + line;
       }
       var flags = undefined;
       if (groups.length >= 3) {

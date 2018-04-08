@@ -45,6 +45,7 @@
         <textarea id="url-exempt-tb" class="scrollable-textbox"
                   placeholder="eg. somedomain.com or `^somedomain\.com"></textarea>
       </div>
+      <p id="url-exempt-errors" class="error-txt"></p>
 
       <div class="group-header">Title Use Overrides</div>
       <div style="margin:5pt">
@@ -53,6 +54,7 @@
           <textarea id="title-override-tb" class="scrollable-textbox"
                     placeholder="eg. somedomain.com or `^somedomain\.com"></textarea>
         </div>
+         <p id="title-override-errors" class="error-txt"></p>
       </div>
 
       <div class="group-header">Fragment Use Overrides</div>
@@ -62,17 +64,20 @@
           <textarea id="fragment-override-tb" class="scrollable-textbox"
                     placeholder="eg. somedomain.com or `^somedomain\.com"></textarea>
         </div>
+        <p id="fragment-override-errors" class="error-txt"></p>
       </div>
 
       <div style="margin-bottom:5pt" class="group-header">URL Tranforms</div>
-      One pattern`replacement per line. Separate with a backtick.
+      One "pattern`replacement[`flags]" per line. Separate with a backtick.
       <div style="margin:5pt">
         <textarea id="url-transform-tb" class="scrollable-textbox"
                   placeholder="eg. ^(.*)\.somedomain\.com`$1.foo.com"></textarea>
       </div>
+      <p id="url-transform-errors" class="error-txt"></p>
 
       <div style="margin-top:10pt; margin-bottom:20pt">
          <button id="save-button" class="button-base save-button">Save</button>
+         <div id="save-errors" style="margin-top:5pt" class="error-txt"></div>
       </div>
 
       <div class="group-header bg-secondary">Try URL Conversions</div>

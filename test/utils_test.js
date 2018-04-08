@@ -42,15 +42,6 @@ QUnit.test("getSanitizedLines test", (assert) => {
    assert.deepEqual(lines, ["foo", "x"]);
 });
 
-
-QUnit.test("isValidUrlTransformLine test", (assert) => {
-   assert.ok(isValidUrlTransformLine("a`v"));
-   assert.ok(isValidUrlTransformLine("axxxx`vfgfdg"));
-   assert.ok(isValidUrlTransformLine("axxxx`vfgfdg`dfsdf"));
-   assert.notOk(isValidUrlTransformLine("axxx"));
-   assert.notOk(isValidUrlTransformLine(""));
-});
-
 QUnit.test("updateOptionsCache test", (assert) => {
    var done = assert.async();
    updateOptionCache(() => {
