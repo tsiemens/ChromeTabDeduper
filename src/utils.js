@@ -1,4 +1,6 @@
 // Copyright (c) 2018 Trevor Siemens.
+#ifndef UTILS_JS
+#define UTILS_JS
 
 function ftrace() {
    var err = new Error();
@@ -52,6 +54,48 @@ function setOption(key, val, callback) {
 
 function setOptions(keysAndVals, callback) {
    chrome.storage.local.set(keysAndVals, callback);
+}
+
+var optionCache = {};
+var optionCacheInitialized = false;
+// callback is optional
+function updateOptionCache(callback) {
+   getOptions([
+      EOpt.useTitleDefault,
+      EOpt.ignoreFragmentDefault,
+      EOpt.urlExempts,
+      EOpt.titleOverride,
+      EOpt.fragmentOverride,
+      EOpt.urlTransform
+     ], (items) => {
+
+      optionCache[EOpt.useTitleDefault] = items[EOpt.useTitleDefault];
+      optionCache[EOpt.ignoreFragmentDefault] = items[EOpt.ignoreFragmentDefault];
+
+      optionCache[EOpt.urlExempts] = linesToUrlRules(getSanitizedLines(
+         items[EOpt.urlExempts]
+      ));
+      optionCache[EOpt.titleOverride] = linesToUrlRules(getSanitizedLines(
+         items[EOpt.titleOverride]
+      ));
+      optionCache[EOpt.fragmentOverride] = linesToUrlRules(getSanitizedLines(
+         items[EOpt.fragmentOverride]
+      ));
+
+      var sanReplacedLines = getSanitizedLines(items[EOpt.urlTransform]);
+      var transforms = [];
+      sanReplacedLines.forEach((line) => {
+         if (isValidUrlTransformLine(line)) {
+            transforms.push(new UrlTransform(line));
+         }
+      });
+      optionCache[EOpt.urlTransform] = transforms;
+
+      optionCacheInitialized = true;
+      if (callback) {
+         callback();
+      }
+   });
 }
 
 function getSanitizedLines(textOption) {
@@ -129,49 +173,6 @@ function findMatchingRule(url, rules) {
    }
    return null;
 }
-
-var optionCache = {};
-var optionCacheInitialized = false;
-// callback is optional
-function updateOptionCache(callback) {
-   getOptions([
-      EOpt.useTitleDefault,
-      EOpt.ignoreFragmentDefault,
-      EOpt.urlExempts,
-      EOpt.titleOverride,
-      EOpt.fragmentOverride,
-      EOpt.urlTransform
-     ], (items) => {
-
-      optionCache[EOpt.useTitleDefault] = items[EOpt.useTitleDefault];
-      optionCache[EOpt.ignoreFragmentDefault] = items[EOpt.ignoreFragmentDefault];
-
-      optionCache[EOpt.urlExempts] = linesToUrlRules(getSanitizedLines(
-         items[EOpt.urlExempts]
-      ));
-      optionCache[EOpt.titleOverride] = linesToUrlRules(getSanitizedLines(
-         items[EOpt.titleOverride]
-      ));
-      optionCache[EOpt.fragmentOverride] = linesToUrlRules(getSanitizedLines(
-         items[EOpt.fragmentOverride]
-      ));
-
-      var sanReplacedLines = getSanitizedLines(items[EOpt.urlTransform]);
-      var transforms = [];
-      sanReplacedLines.forEach((line) => {
-         if (isValidUrlTransformLine(line)) {
-            transforms.push(new UrlTransform(line));
-         }
-      });
-      optionCache[EOpt.urlTransform] = transforms;
-
-      optionCacheInitialized = true;
-      if (callback) {
-         callback();
-      }
-   });
-}
-
 
 var httpStripRe = new RegExp("^[^/]+//([^/].*)")
 function afterHttp(url) {
@@ -294,3 +295,4 @@ function handleTab() {
    });
 }
 
+#endif // UTILS_JS

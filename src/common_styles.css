@@ -1,7 +1,9 @@
 /* Copyright (c) 2018 Trevor Siemens. */
+#include "css_defs.h"
+
 .group-header {
    padding: 2px;
-   background-color: #0098FE;
+   background-color: APP_BLUE;
    border-radius: 3pt;
    color: white;
    font-weight: bold;
@@ -14,3 +16,6 @@
 .bg-secondary {
    background-color: #fe8600;
 }
+
+.group-header-1 HEADER_CSS_CLASS(APP_BLUE)
+.group-header-2 HEADER_CSS_CLASS(APP_ORANGE)

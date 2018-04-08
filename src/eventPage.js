@@ -1,4 +1,5 @@
 // Copyright (c) 2018 Trevor Siemens.
+#include "utils.js"
 
 updateOptionCache(() => {
    ftrace();

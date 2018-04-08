@@ -3,4 +3,5 @@
 *.swo
 
 # Build files
+dist/
 TabDeduper.zip

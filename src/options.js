@@ -1,4 +1,5 @@
 // Copyright (c) 2018 Trevor Siemens.
+#include "utils.js"
 
 function ebi(id) {
    return document.getElementById(id);

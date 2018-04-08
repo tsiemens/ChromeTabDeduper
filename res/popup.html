@@ -1,0 +1,29 @@
+<!doctype html>
+<!-- Copyright (c) 2018 Trevor Siemens. -->
+<!--
+ This page is shown when the extension button is clicked, because the
+ "browser_action" field in manifest.json contains the "default_popup" key with
+ value "popup.html".
+ -->
+<html>
+  <head>
+    <title>Tab Deduper Popup</title>
+    <link rel="stylesheet" href="popup.css">
+
+    <!--
+      - JavaScript and HTML must be in separate files: see the Content Security
+      - Policy documentation[1] for details and explanation.
+      -
+      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+    -->
+    <script src="popup.js"></script>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="group-header">Duplicate Tabs</div>
+      <div id="tab_list" class="short-w tab-list-grp">
+      </div>
+    </div>
+  </body>
+</html>

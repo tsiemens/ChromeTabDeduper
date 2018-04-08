@@ -1,0 +1,68 @@
+/* Copyright (c) 2018 Trevor Siemens. */
+#include "css_defs.h"
+#include "common_styles.css"
+
+body {
+  margin: 10px;
+  white-space: nowrap;
+}
+
+h1 {
+  font-size: 15px;
+}
+
+ID(container) {
+   width: 250pt;
+}
+
+.short-w {
+   max-width: 250pt;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+.tab-list-grp {
+   padding: 2px;
+}
+.no-tabs-item {
+   display: flex;
+   justify-content: space-around;
+}
+.tab-list-item {
+   margin: 1px;
+   margin-bottom: 3px;
+   padding: 2px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   border-radius: 3pt;
+}
+.tab-icon {
+   margin: 1pt;
+   width: 16px;
+}
+.tab-icon-title-grp {
+   display: flex;
+   align-items: center;
+}
+.tab-title {
+  pointer-events: none;
+}
+
+.kill-tab-button {
+  display: inline-block;
+  padding: 2pt 5pt;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #bbb;
+  background-color: #00000000;
+  font-weight: bolder;
+  border: none;
+  border-radius: 3pt;
+  margin-left: 10pt;
+}
+.kill-tab-button:hover {background-color: #ddd}
