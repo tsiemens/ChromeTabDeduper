@@ -2,7 +2,7 @@
    "manifest_version": 2,
 
    "name": "Tab Deduper",
-   "description": "This extension allows the user to deduplicate tabs.",
+   "description": "An extension that allows the user to deduplicate tabs.",
    "version": "1.0",
    "icons": {
       "128": "icon.png"
