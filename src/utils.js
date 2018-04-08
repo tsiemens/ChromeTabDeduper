@@ -147,10 +147,17 @@ function isValidUrlTransformLine(line) {
 
 class UrlTransform {
    constructor(line) {
-      // Produces 'xxx`yyy' -> ["", "xxx", "`", "yyy"]
-      var groups = line.split(/^([^`]*)(`)/);
-      this.pattern = new RegExp(groups[1]);
-      this.sub = groups[3];
+      // Produces 'xxx`yyy`g' -> ["xxx", "yyy", "g"]
+      var groups = line.split('`');
+      if (groups.length < 2) {
+         throw "Insufficient groups in " + line;
+      }
+      var flags = undefined;
+      if (groups.length >= 3) {
+         flags = groups[2];
+      }
+      this.pattern = new RegExp(groups[0], flags);
+      this.sub = groups[1];
    }
 }
 

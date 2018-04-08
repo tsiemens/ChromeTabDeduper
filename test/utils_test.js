@@ -14,7 +14,18 @@ function dictValues(obj) {
    return vals;
 }
 
-function setOptionsCache() {
+function getMockOptions(keysAndDefaults, callback) {
+   var mockOptions = {}
+   dictValues(EOpt).forEach((opt) => {
+      mockOptions[opt] = getOptionDefault(opt);
+   });
+   // Just return everything all the time
+   callback(mockOptions);
+}
+// Override the utils function
+getOptions = getMockOptions;
+
+function setDefaultOptionsCache() {
    chrome.storage.local.get.throws();
    optionCacheInitialized = true;
    dictValues(EOpt).forEach((opt) => {
@@ -29,11 +40,6 @@ QUnit.test("getSanitizedLines test", (assert) => {
 
    var lines = getSanitizedLines(" foo \n  \n x");
    assert.deepEqual(lines, ["foo", "x"]);
-
-   // updateOptionCache(() => {
-      // assert.ok(true, "Finished updateOptionCache");
-      // done();
-   // })
 });
 
 
@@ -43,4 +49,45 @@ QUnit.test("isValidUrlTransformLine test", (assert) => {
    assert.ok(isValidUrlTransformLine("axxxx`vfgfdg`dfsdf"));
    assert.notOk(isValidUrlTransformLine("axxx"));
    assert.notOk(isValidUrlTransformLine(""));
+});
+
+QUnit.test("updateOptionsCache test", (assert) => {
+   var done = assert.async();
+   updateOptionCache(() => {
+      assert.ok(optionCacheInitialized, "callback");
+      assert.equal(optionCache[EOpt.useTitleDefault], true, EOpt.useTitleDefault);
+      assert.equal(optionCache[EOpt.ignoreFragmentDefault], true,
+                   EOpt.ignoreFragmentDefault);
+      assert.deepEqual(optionCache[EOpt.urlExempts], [], EOpt.urlExempts);
+      assert.deepEqual(optionCache[EOpt.titleOverride], [], EOpt.titleOverride);
+      assert.deepEqual(optionCache[EOpt.fragmentOverride], [], EOpt.fragmentOverride);
+      assert.deepEqual(optionCache[EOpt.urlTransform], [], EOpt.urlTransform);
+      done();
+   });
+});
+
+QUnit.test("getUrlDedupIdPart test", (assert) => {
+   var done = assert.async();
+   updateOptionCache(() => {
+      assert.equal(getUrlDedupIdPart("foo.com"), "foo.com");
+
+      optionCache[EOpt.ignoreFragmentDefault] = true,
+      assert.equal(getUrlDedupIdPart("foo.com#foo"), "foo.com");
+      optionCache[EOpt.ignoreFragmentDefault] = false,
+      assert.equal(getUrlDedupIdPart("foo.com#foo"), "foo.com#foo");
+
+      optionCache[EOpt.urlTransform] = [new UrlTransform('foo`bar')];
+      optionCache[EOpt.ignoreFragmentDefault] = true,
+      assert.equal(getUrlDedupIdPart("foo.com#foo"), "bar.com");
+      optionCache[EOpt.ignoreFragmentDefault] = false,
+      assert.equal(getUrlDedupIdPart("foo.com#foo"), "bar.com#foo");
+
+      optionCache[EOpt.urlTransform] = [new UrlTransform('foo`bar`g')];
+      optionCache[EOpt.ignoreFragmentDefault] = true,
+      assert.equal(getUrlDedupIdPart("foo.com#foo"), "bar.com");
+      optionCache[EOpt.ignoreFragmentDefault] = false,
+      assert.equal(getUrlDedupIdPart("foo.com#foo"), "bar.com#bar");
+
+      done();
+   });
 });
