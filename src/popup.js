@@ -32,6 +32,7 @@ function populateTabList(dupTabGrps, currTab) {
    var tabList = document.getElementById('tab_list');
    // Clear the list
    tabList.innerHTML = "";
+   console.log("Current tab:");
    console.log(currTab);
    dupTabGrps.forEach((tabs) => { tabs.forEach((t) => {
       var boldStyle = '';
@@ -79,7 +80,7 @@ function reloadTabList() {
       return;
    }
    getDuplicateTabs((tabGrps) => {
-      chrome.tabs.query({"active": true}, function(resArr){
+      chrome.tabs.query({active: true, lastFocusedWindow: true}, function(resArr){
          populateTabList(tabGrps, resArr[0]);
       });
    });
