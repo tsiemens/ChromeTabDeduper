@@ -2,7 +2,9 @@
 A Chome extension for deduplicating tabs
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgray.svg)](https://opensource.org/licenses/MIT)
-![Chrome Web Store](https://img.shields.io/chrome-web-store/v/fpcohiaaphpfoneofdlabjnpipbnkplj.svg)
+![Chrome Web Store version](https://img.shields.io/chrome-web-store/v/fpcohiaaphpfoneofdlabjnpipbnkplj.svg)
+
+[![Chrome Web Store page](https://developer.chrome.com/webstore/images/ChromeWebStore_BadgeWBorder_v2_206x58.png)](https://chrome.google.com/webstore/detail/tab-deduper/fpcohiaaphpfoneofdlabjnpipbnkplj)
 
 ## Why Another of these?
 Yes, this kind of extension already exists for Chrome. However, after using Firefox for some time,
