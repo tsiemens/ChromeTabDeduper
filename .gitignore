@@ -5,3 +5,5 @@
 # Build files
 dist/
 TabDeduper.zip
+*.crx
+*.pem

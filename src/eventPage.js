@@ -41,6 +41,19 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
    });
 });
 
+
+settingsContextMenuId = "settings_context_menu_item";
+chrome.contextMenus.create({
+   id: settingsContextMenuId,
+   title: "Settings",
+   contexts: ["browser_action"],
+});
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+   if(info.menuItemId === settingsContextMenuId) {
+      chrome.tabs.create({url: chrome.extension.getURL('options.html')});
+   }
+})
+
 // chrome.webNavigation.onCommitted.addListener(function (details) {
    // console.log("naved!");
 // });

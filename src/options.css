@@ -71,5 +71,5 @@ ID(container) {
    height: 100pt;
    width: 300pt;
    overflow: scroll;
-   white-space: nowrap;
+   white-space: pre;
 }
