@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Window Color Test</title>
+  <style>
+      .color-blob {
+         margin: 3px;
+         border-radius: 2px;
+      }
+  </style>
+</head>
+<body>
+  <h1>Window Color Assignments by index</h1>
+  <div id="colors"></div>
+  <script src="../dist/utils.js"></script>
+  <script>
+      let colorsDiv = document.getElementById('colors');
+      for (let i = 0; i < 20; i++) {
+         colorsDiv.innerHTML += '<div style="background-color: ' + indexToColorStr(i) +
+            '" class="color-blob">' + i + '</div>';
+      }
+  </script>
+</body>
+</html>

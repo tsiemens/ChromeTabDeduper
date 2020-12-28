@@ -21,6 +21,7 @@ function ebi(id) {
 
 // local storage settings
 var EOpt = {
+   dedupAllWindows: 'dedupAllWindows', // bool
    useTitleDefault: 'useTitleDefault', // bool
    ignoreFragmentDefault: 'ignoreFragmentDefault', // bool
    urlExempts: 'urlExempts', // list of urls or regexeps
@@ -32,6 +33,7 @@ var EOpt = {
 function getOptionDefault(prop) {
    var defaultVal = undefined;
    switch(prop) {
+    case EOpt.dedupAllWindows:
     case EOpt.useTitleDefault:
     case EOpt.ignoreFragmentDefault:
       defaultVal = true;
@@ -72,6 +74,7 @@ var optionCacheInitialized = false;
 // callback is optional
 function updateOptionCache(callback) {
    getOptions([
+      EOpt.dedupAllWindows,
       EOpt.useTitleDefault,
       EOpt.ignoreFragmentDefault,
       EOpt.urlExempts,
@@ -81,6 +84,7 @@ function updateOptionCache(callback) {
      ], (items) => {
       var errors = null;
 
+      optionCache[EOpt.dedupAllWindows] = items[EOpt.dedupAllWindows];
       optionCache[EOpt.useTitleDefault] = items[EOpt.useTitleDefault];
       optionCache[EOpt.ignoreFragmentDefault] = items[EOpt.ignoreFragmentDefault];
 
@@ -307,7 +311,12 @@ function getDuplicateTabs(func) {
    var tabsByDedupId = {}
    var dupTabs = [];
 
-   chrome.tabs.query({"currentWindow": true}, function(resArr){
+   queryFilter = {}
+   if (!optionCache[EOpt.dedupAllWindows]) {
+      queryFilter["currentWindow"] = true;
+   }
+
+   chrome.tabs.query(queryFilter, function(resArr){
       resArr.forEach((t) => {
          var url = afterHttp(t.url);
          var exemptRule = findMatchingRule(url, optionCache[EOpt.urlExempts]);
@@ -351,6 +360,14 @@ function handleTab() {
       chrome.browserAction.setBadgeBackgroundColor({'color': "#e01616"});
       chrome.browserAction.setBadgeText({'text': "" + badgeText});
    });
+}
+
+function indexToColorStr(id) {
+   let theId = id;
+   let r = 0 + ( ( theId * 60 ) % 256 );
+   let g = 255 - ( ( theId * 60 ) % 256 );
+   let b = 255 - ( ( theId * 20 ) % 206 );
+   return `rgb(${r}, ${g}, ${b})`;
 }
 
 #endif // UTILS_JS

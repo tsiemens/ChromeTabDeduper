@@ -33,6 +33,7 @@ function setOptionsErrorTexts(errors) {
 }
 
 function saveAllOptions() {
+   let allWindowsCb = ebi('dedup-all-windows-checkbox');
    var useTitleCb = ebi('use-title-default-checkbox');
    var ignoreFragCb = ebi('ignore-fragment-default-checkbox');
    var urlExemptTb = ebi("url-exempt-tb");
@@ -41,6 +42,7 @@ function saveAllOptions() {
    var urlTranformTb = ebi("url-transform-tb");
 
    var kvs = {};
+   kvs[EOpt.dedupAllWindows] = allWindowsCb.checked;
    kvs[EOpt.useTitleDefault] = useTitleCb.checked;
    kvs[EOpt.ignoreFragmentDefault] = ignoreFragCb.checked;
    kvs[EOpt.urlExempts] = urlExemptTb.value;
@@ -58,6 +60,7 @@ function saveAllOptions() {
 
 function loadAllOptions() {
    getOptions([
+      EOpt.dedupAllWindows,
       EOpt.useTitleDefault,
       EOpt.ignoreFragmentDefault,
       EOpt.urlExempts,
@@ -65,6 +68,9 @@ function loadAllOptions() {
       EOpt.fragmentOverride,
       EOpt.urlTransform
      ], (items) => {
+      let allWindowsCb = ebi('dedup-all-windows-checkbox');
+      allWindowsCb.checked = items[EOpt.dedupAllWindows];
+
       var useTitleCb = ebi('use-title-default-checkbox');
       useTitleCb.checked = items[EOpt.useTitleDefault];
 

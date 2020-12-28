@@ -41,7 +41,6 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
    });
 });
 
-
 settingsContextMenuId = "settings_context_menu_item";
 chrome.contextMenus.create({
    id: settingsContextMenuId,

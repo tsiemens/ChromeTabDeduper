@@ -23,17 +23,38 @@ function onTabLineClick(line) {
       console.error("Failed to parse tabid " + tabIdStr);
       return;
    }
-   chrome.tabs.update(tabId, {active: true}, () => {
-      reloadTabList();
+
+   chrome.tabs.get(tabId, (tab) => {
+      chrome.windows.update(tab.windowId, {focused: true});
+      chrome.tabs.update(tabId, {active: true}, () => {
+         reloadTabList();
+      });
    });
 }
 
-function populateTabList(dupTabGrps, currTab) {
+function makeWindowIdToIndexMap() {
+   return new Promise(function (resolve, reject) {
+      let windowIdToIndex = {}
+      let index = 0;
+      chrome.windows.getAll({}, (windows) => {
+         windows.forEach((w) => {
+            windowIdToIndex[w.id] = index;
+            index++;
+         });
+         resolve(windowIdToIndex);
+      });
+   });
+}
+
+async function populateTabList(dupTabGrps, currTab) {
    var tabList = document.getElementById('tab_list');
    // Clear the list
    tabList.innerHTML = "";
    console.log("Current tab:");
    console.log(currTab);
+
+   let w2i = await makeWindowIdToIndexMap();
+
    dupTabGrps.forEach((tabs) => { tabs.forEach((t) => {
       var boldStyle = '';
       if (currTab && currTab.id === t.id) {
@@ -41,6 +62,8 @@ function populateTabList(dupTabGrps, currTab) {
       }
       tabList.innerHTML +=
          '<div class="tab-list-item">' +
+           '<div class="tab-window-indicator" title="Window ID ' + t.windowId + '" ' +
+                 'style="background-color: ' + indexToColorStr(w2i[t.windowId]) + ';"></div>' +
            '<div class="short-w tab-icon-title-grp" data-tabid="' + t.id + '">' +
            '<img class="tab-icon" src="' + t.favIconUrl + '">' +
            '<div class="short-w tab-title" ' +

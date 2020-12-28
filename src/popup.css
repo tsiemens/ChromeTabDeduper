@@ -36,9 +36,18 @@ ID(container) {
    align-items: center;
    justify-content: space-between;
    border-radius: 3pt;
+   position: relative;
+}
+.tab-window-indicator {
+   width: 5pt;
+   height: 100%;
+   position: absolute;
+   background-color: black;
+   border-radius: 2px;
 }
 .tab-icon {
    margin: 1pt;
+   margin-left: 8pt;
    width: 16px;
 }
 .tab-icon-title-grp {
