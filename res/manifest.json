@@ -1,20 +1,26 @@
 {
-   "manifest_version": 2,
+   "manifest_version": 3,
 
    "name": "Tab Deduper",
    "description": "An extension that allows the user to deduplicate tabs.",
-   "version": "1.2",
+   "version": "1.2.1",
    "icons": {
-      "128": "icon.png"
-   },
-
-   "browser_action": {
-      "default_icon": "icon.png",
-      "default_popup": "popup.html"
-   },
+      "16": "icon16.png",
+      "32": "icon32.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    },
+    "action": {
+        "default_icon": {
+            "16": "icon16.png",
+            "32": "icon32.png",
+            "48": "icon48.png",
+            "128": "icon128.png"
+        },
+        "default_popup": "popup.html"
+    },
    "background": {
-      "scripts": ["eventPage.js"],
-      "persistent": false
+      "service_worker": "eventPage.js"
    },
    "options_page": "options.html",
    "permissions": [

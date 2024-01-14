@@ -357,8 +357,8 @@ function handleTab() {
       console.log("duped tabs: " + totalTabs);
 
       var badgeText = totalTabs > 0 ? totalTabs.toString() : "";
-      chrome.browserAction.setBadgeBackgroundColor({'color': "#e01616"});
-      chrome.browserAction.setBadgeText({'text': "" + badgeText});
+      chrome.action.setBadgeBackgroundColor({'color': "#e01616"});
+      chrome.action.setBadgeText({'text': "" + badgeText});
    });
 }
 

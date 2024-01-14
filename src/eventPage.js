@@ -29,6 +29,14 @@ chrome.windows.onFocusChanged.addListener(function(window_) {
 });
 chrome.runtime.onInstalled.addListener((details) => {
    ftrace();
+
+   let settingsContextMenuId = "settings_context_menu_item";
+   chrome.contextMenus.create({
+      id: settingsContextMenuId,
+      title: "Settings",
+      contexts: ["browser_action"],
+   });
+
    updateOptionCache(() => {
       handleTab();
    });
@@ -41,12 +49,6 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
    });
 });
 
-settingsContextMenuId = "settings_context_menu_item";
-chrome.contextMenus.create({
-   id: settingsContextMenuId,
-   title: "Settings",
-   contexts: ["browser_action"],
-});
 chrome.contextMenus.onClicked.addListener((info, tab) => {
    if(info.menuItemId === settingsContextMenuId) {
       chrome.tabs.create({url: chrome.extension.getURL('options.html')});
