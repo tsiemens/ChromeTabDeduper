@@ -22,7 +22,7 @@
       <p>Below, each text box can have one pattern per line.
       Unless otherwise specified, each line can either be:<br>
       &nbsp;&nbsp;- A simple text match on the URL, starting from the beginning of the domain.<br>
-      &nbsp;&nbsp;- A regular expression, marked with a backtick (`) at the begginning of the line (backtick is placed after a negating '-', if used).
+      &nbsp;&nbsp;- A regular expression, marked with a backtick (<code>`</code>) at the begginning of the line (backtick is placed after a negating <code>-</code>, if used).
       </p>
 
       <div class="group-header">Global Options</div>
@@ -30,17 +30,19 @@
       <div>
         <label class="checkbox-container">
           <input id="dedup-all-windows-checkbox" type="checkbox" checked="checked">
-          Dedup tabs across all windows
+          Dedupe tabs across all windows
         </label>
         <label class="checkbox-container">
           <input id="use-title-default-checkbox" type="checkbox" checked="checked">
-          Use tab title to dedup by default
+          Also check tab title when comparing tabs for duplicates
+          <span class="info-icon" title="Tabs will be considered duplicates only if BOTH the URL and title are the same.">i</span>
         </label>
       </div>
       <div>
         <label class="checkbox-container">
           <input id="ignore-fragment-default-checkbox" type="checkbox" checked="checked">
-          Ignore URL fragments (after #) by default
+          Ignore URL fragments (after <code>#</code>) by default
+          <span class="info-icon" title="Fragments are standard in URLs for indicating a specific position within the page, and will often update when clicking or navigating to sections within the page. On some sites, query parameters (?...) are used for this purpose instead, which is not standard. Other sites would often use query parameters to specify the query for a search results page, etc. Use URL replacements below on specific sites to remove them in such cases.">i</span>
         </label>
       </div>
 
@@ -71,8 +73,16 @@
         <p id="fragment-override-errors" class="error-txt"></p>
       </div>
 
-      <div style="margin-bottom:5pt" class="group-header">URL Tranforms</div>
-      One "pattern`replacement[`flags]" per line. Separate with a backtick.
+      <div style="margin-bottom:5pt" class="group-header">URL Pattern Replacements for Matching</div>
+      <p>
+        These patterns (ECMPScript/Javascript regular expression replacements)
+        are applied to URLs before being compared with each other.
+        <br>
+        Does not modify the actual tab URLs.
+      </p>
+      <p>
+        One <code>pattern`replacement[`flags]</code> per line. Separate with a backtick.
+      </p>
       <div style="margin:5pt">
         <textarea id="url-transform-tb" class="scrollable-textbox"
                   placeholder="eg. ^(.*)\.somedomain\.com`$1.foo.com"></textarea>
