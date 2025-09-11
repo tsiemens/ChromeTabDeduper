@@ -15,7 +15,7 @@ $(RES_LN): | dist-dir
 dist-res: $(RES_LN)
 
 $(ZIPFILE): dist-res
-	zip -FSr $(ZIPFILE) dist
+	cd dist && zip -x "*.swp" -FSr ../$(ZIPFILE) .
 
 zip: $(ZIPFILE)
 
