@@ -3,7 +3,7 @@
 
    "name": "Tab Deduper",
    "description": "An extension that allows the user to deduplicate tabs.",
-   "version": "1.2.1",
+   "version": "1.2.2",
    "icons": {
       "16": "icon16.png",
       "32": "icon32.png",
