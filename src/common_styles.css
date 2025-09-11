@@ -1,5 +1,32 @@
-/* Copyright (c) 2018 Trevor Siemens. */
-#include "css_defs.h"
+/* Copyright (c) 2025 Trevor Siemens. */
 
-.group-header HEADER_CSS_CLASS(APP_BLUE,)
-.group-header-2 HEADER_CSS_CLASS(APP_ORANGE,)
+:root {
+  --app-blue: #0098FE;
+  --app-blue-hover: #115dc5;
+  --app-blue-click: #0b3d81;
+
+  --app-orange: #fe8600;
+  --app-orange-hover: #cb6c02;
+  --app-orange-click: #814400;
+}
+
+/* Base styles for all headers */
+[class*="group-header"] {
+  padding: 2px;
+  border-radius: 3pt;
+  color: white;
+  font-weight: bold;
+  font-size: small;
+  margin-bottom: 2pt;
+  padding: 3pt;
+  padding-left: 8pt;
+}
+
+/* Specific header colors */
+.group-header {
+  background-color: var(--app-blue);
+}
+
+.group-header-2 {
+  background-color: var(--app-orange);
+}

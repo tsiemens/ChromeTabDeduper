@@ -1,6 +1,5 @@
 /* Copyright (c) 2018 Trevor Siemens. */
-#include "css_defs.h"
-#include "common_styles.css"
+@import "common_styles.css";
 
 body {
   margin: 10px;
@@ -11,7 +10,7 @@ h1 {
   font-size: 15px;
 }
 
-ID(container) {
+#container {
    width: 250pt;
 }
 
@@ -74,9 +73,13 @@ ID(container) {
   border-radius: 3pt;
   margin-left: 10pt;
 }
-.kill-tab-button:hover {background-color: #ddd}
+.kill-tab-button:hover {
+  background-color: #ddd;
+}
 
-.warning-bubble HEADER_CSS_CLASS(#ff5151,
-   justify-content: center;
-   display: flex;
-   margin-bottom:10px; )
+.group-header-warning {
+  background-color: #ff5151;
+  justify-content: center;
+  display: flex;
+  margin-bottom: 10px;
+}

@@ -1,6 +1,5 @@
 /* Copyright (c) 2018 Trevor Siemens. */
-#include "css_defs.h"
-#include "common_styles.css"
+@import "common_styles.css";
 
 body {
   margin: 10px;
@@ -17,7 +16,7 @@ p {
   white-space: normal;
 }
 
-ID(container) {
+#container {
    width: 85%;
 }
 
