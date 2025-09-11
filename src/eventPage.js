@@ -1,5 +1,5 @@
 // Copyright (c) 2018 Trevor Siemens.
-#include "utils.js"
+import { ftrace, handleTab, updateOptionCache } from './utils.js';
 
 updateOptionCache(() => {
    ftrace();

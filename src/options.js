@@ -1,5 +1,16 @@
 // Copyright (c) 2018 Trevor Siemens.
-#include "utils.js"
+import {
+   afterHttp,
+   ebi,
+   escapeHtml,
+   EOpt,
+   handleTab,
+   getOptions,
+   getUrlDedupIdPart,
+   setOptions,
+   updateOptionCache,
+   optionCacheInitialized,
+} from './utils.js';
 
 function setOptionErrorText(errors, errPar) {
    var errHtmls = [];

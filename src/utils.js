@@ -1,26 +1,24 @@
 // Copyright (c) 2018 Trevor Siemens.
-#ifndef UTILS_JS
-#define UTILS_JS
 
-function ftrace() {
-   var err = new Error();
-   stacks = err.stack.split('\n');
+export function ftrace() {
+   const err = new Error();
+   const stacks = err.stack.split('\n');
    console.log(stacks[2].replace(/^ *at */, ''))
 }
 
-function escapeHtml(html) {
+export function escapeHtml(html) {
     var text = document.createTextNode(html);
     var div = document.createElement('div');
     div.appendChild(text);
     return div.innerHTML;
 }
 
-function ebi(id) {
+export function ebi(id) {
    return document.getElementById(id);
 }
 
 // local storage settings
-var EOpt = {
+export const EOpt = {
    dedupAllWindows: 'dedupAllWindows', // bool
    useTitleDefault: 'useTitleDefault', // bool
    ignoreFragmentDefault: 'ignoreFragmentDefault', // bool
@@ -30,7 +28,7 @@ var EOpt = {
    urlTransform: 'urlTranforms' // list of pattern and replacement
 };
 
-function getOptionDefault(prop) {
+export function getOptionDefault(prop) {
    var defaultVal = undefined;
    switch(prop) {
     case EOpt.dedupAllWindows:
@@ -50,13 +48,23 @@ function getOptionDefault(prop) {
    return defaultVal;
 }
 
-function getOptions(props, callback) {
+// For test mocking
+let _getOptionsImpl = (props, callback) => {
    var keysAndDefaults = {}
    props.forEach((prop) => {
       var defaultVal = getOptionDefault(prop);
       keysAndDefaults[prop] = defaultVal;
    });
    chrome.storage.local.get(keysAndDefaults, callback);
+};
+
+export function getOptions(props, callback) {
+   return _getOptionsImpl(props, callback);
+}
+
+// For testing only
+export function setGetOptionsForTesting(mockFn) {
+   _getOptionsImpl = mockFn;
 }
 
 function setOption(key, val, callback) {
@@ -65,14 +73,20 @@ function setOption(key, val, callback) {
    chrome.storage.local.set(keysAndVals, callback);
 }
 
-function setOptions(keysAndVals, callback) {
+export function setOptions(keysAndVals, callback) {
    chrome.storage.local.set(keysAndVals, callback);
 }
 
-var optionCache = {};
-var optionCacheInitialized = false;
+export let optionCache = {};
+export let optionCacheInitialized = false;
+
+// Testing utilities
+export function resetOptionsForTesting() {
+    optionCache = {};
+    optionCacheInitialized = false;
+}
 // callback is optional
-function updateOptionCache(callback) {
+export function updateOptionCache(callback) {
    getOptions([
       EOpt.dedupAllWindows,
       EOpt.useTitleDefault,
@@ -146,7 +160,7 @@ function updateOptionCache(callback) {
    });
 }
 
-function getSanitizedLines(textOption) {
+export function getSanitizedLines(textOption) {
    var lines = textOption.split('\n');
    var cleanLines = [];
    lines.forEach((line) => {
@@ -167,7 +181,7 @@ function lineToPatternOrStr(line) {
    }
 }
 
-class UrlRule {
+export class UrlRule {
    constructor(line) {
       if (line[0] == '-') {
          // rule is a negation
@@ -200,7 +214,7 @@ function linesToUrlRules(lines) {
    return rules;
 }
 
-class UrlTransform {
+export class UrlTransform {
    constructor(line) {
       // Produces 'xxx`yyy`g' -> ["xxx", "yyy", "g"]
       var groups = line.split('`');
@@ -237,7 +251,7 @@ function findMatchingRule(url, rules) {
 }
 
 var httpStripRe = new RegExp("^[^/]+//([^/].*)")
-function afterHttp(url) {
+export function afterHttp(url) {
    var m = url.match(httpStripRe);
    if (m) {
       return m[1];
@@ -253,7 +267,7 @@ function stripFragment(url) {
 }
 
 // The url must be pre-sanitized (run afterHttp on it)
-function getUrlDedupIdPart(url) {
+export function getUrlDedupIdPart(url) {
    var finalUrl = url;
 
    // Fragment
@@ -280,7 +294,7 @@ function getUrlDedupIdPart(url) {
    return finalUrl;
 }
 
-function getTabDedupId(tab) {
+export function getTabDedupId(tab) {
    // https://developer.chrome.com/extensions/tabs#type-Tab
    var baseUrl = afterHttp(tab.url);
 
@@ -307,11 +321,11 @@ function getTabDedupId(tab) {
  * Gets an array of tab arrays, grouped by duplicates.
  * func is function([][]Tab)
  */
-function getDuplicateTabs(func) {
-   var tabsByDedupId = {}
+export function getDuplicateTabs(func) {
+   var tabsByDedupId = {};
    var dupTabs = [];
 
-   queryFilter = {}
+   var queryFilter = {};
    if (!optionCache[EOpt.dedupAllWindows]) {
       queryFilter["currentWindow"] = true;
    }
@@ -342,7 +356,7 @@ function getDuplicateTabs(func) {
    });
 }
 
-function handleTab() {
+export function handleTab() {
    ftrace()
    if (!optionCacheInitialized) {
       console.warn("Options cache not yet initialized");
@@ -362,7 +376,7 @@ function handleTab() {
    });
 }
 
-function indexToColorStr(id) {
+export function indexToColorStr(id) {
    let theId = id;
    let r = 0 + ( ( theId * 60 ) % 256 );
    let g = 255 - ( ( theId * 60 ) % 256 );
@@ -370,4 +384,4 @@ function indexToColorStr(id) {
    return `rgb(${r}, ${g}, ${b})`;
 }
 
-#endif // UTILS_JS
+

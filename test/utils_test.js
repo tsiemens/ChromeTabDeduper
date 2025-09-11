@@ -1,3 +1,23 @@
+import QUnit, { test, module } from '/test/lib/qunit-module.js';
+import {
+   UrlTransform,
+   UrlRule,
+   getSanitizedLines,
+   getOptionDefault,
+   getOptions,
+   updateOptionCache,
+   optionCache,
+   optionCacheInitialized,
+   EOpt,
+   getUrlDedupIdPart,
+   getTabDedupId,
+   resetOptionsForTesting,
+   setGetOptionsForTesting
+} from '../src/utils.js';
+
+console.log('Test module loading...');
+
+// Helper functions
 function dict(k, v) {
    var d = {};
    d[k] = v;
@@ -22,12 +42,13 @@ function getMockOptions(keysAndDefaults, callback) {
    // Just return everything all the time
    callback(mockOptions);
 }
-// Override the utils function
-getOptions = getMockOptions;
+// Set our mock implementation
+setGetOptionsForTesting(getMockOptions);
 
 function setDefaultOptionsCache() {
    chrome.storage.local.get.throws();
-   optionCacheInitialized = true;
+   resetOptionsForTesting();
+   // Initialize with default values
    dictValues(EOpt).forEach((opt) => {
       optionCache[opt] = getOptionDefault(opt);
    });

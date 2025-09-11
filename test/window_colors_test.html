@@ -14,8 +14,8 @@
 <body>
   <h1>Window Color Assignments by index</h1>
   <div id="colors"></div>
-  <script src="../dist/utils.js"></script>
-  <script>
+  <script type="module">
+      import { indexToColorStr } from '../src/utils.js';
       let colorsDiv = document.getElementById('colors');
       for (let i = 0; i < 20; i++) {
          colorsDiv.innerHTML += '<div style="background-color: ' + indexToColorStr(i) +

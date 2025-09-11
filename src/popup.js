@@ -1,5 +1,11 @@
 // Copyright (c) 2018 Trevor Siemens.
-#include "utils.js"
+import {
+   ebi,
+   getDuplicateTabs,
+   updateOptionCache,
+   optionCacheInitialized,
+   indexToColorStr,
+ } from './utils.js';
 
 function onDeleteClick(btn) {
    var tabIdStr = btn.getAttribute('data-tabid');
