@@ -48,13 +48,3 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
       handleTab();
    });
 });
-
-chrome.contextMenus.onClicked.addListener((info, tab) => {
-   if(info.menuItemId === settingsContextMenuId) {
-      chrome.tabs.create({url: chrome.extension.getURL('options.html')});
-   }
-})
-
-// chrome.webNavigation.onCommitted.addListener(function (details) {
-   // console.log("naved!");
-// });
