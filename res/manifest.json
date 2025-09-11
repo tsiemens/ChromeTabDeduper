@@ -20,7 +20,7 @@
         "default_popup": "popup.html"
     },
    "background": {
-      "service_worker": "eventPage.js",
+      "service_worker": "js/eventPage.js",
       "type": "module"
    },
    "options_page": "options.html",

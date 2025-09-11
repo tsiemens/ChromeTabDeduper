@@ -13,7 +13,7 @@ import {
    getTabDedupId,
    resetOptionsForTesting,
    setGetOptionsForTesting
-} from '../src/utils.js';
+} from '../res/js/utils.js';
 
 console.log('Test module loading...');
 

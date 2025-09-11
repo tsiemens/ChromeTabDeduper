@@ -1,0 +1,51 @@
+import QUnit, { test, module } from './lib/qunit-module.js';
+import {
+   UrlTransform,
+   UrlRule,
+   getSanitizedLines,
+   getOptionDefault,
+   getOptions,
+   updateOptionCache,
+   optionCache,
+   optionCacheInitialized,
+   EOpt,
+   getUrlDedupIdPart,
+   getTabDedupId
+} from '../src/utils.js';
+
+console.log('Setting up utils tests');
+
+// Helper functions
+function dict(k, v) {
+   var d = {};
+   d[k] = v;
+   return d;
+}
+
+function dictValues(obj) {
+   var vals = [];
+   for (var k in obj) {
+      if (obj.hasOwnProperty(k)) {
+         vals.push(obj[k]);
+      }
+   }
+   return vals;
+}
+
+function getMockOptions(keysAndDefaults, callback) {
+   chrome.storage.sync.get.yields(keysAndDefaults);
+   callback(keysAndDefaults);
+}
+
+// Configure QUnit
+QUnit.config.autostart = false;
+
+// Define our test module
+QUnit.module('utils', hooks => {
+   // Add any setup/teardown if needed
+   hooks.beforeEach(() => {
+      // Reset any state before each test
+      chrome.storage.sync.get.reset();
+      chrome.storage.sync.set.reset();
+   });
+});
