@@ -18,7 +18,7 @@ Things I wanted to solve with Tab Deduper:
 
 ## Configuration Guidelines
 
-### URL Transforms
+### URL Transforms / Pattern Replacements
 URL Transforms are a feature - configured in the extension's options page - which allow custom "transformations" of a URL using [regular expressions](https://www.w3schools.com/js/js_regexp.asp) or "regexps". These are very powerful, but for the uninitiated, they can be a bit intimidating. Below are some guidelines and examples for how to effectively use URL Transforms.
 
 #### Testing your pattern
@@ -30,8 +30,21 @@ If that didn't help, try debugging your transforms using a more powerful tool li
 
 For example: If you have a pattern like "```blablabla.com.*`www.blablabla.com```", you would put "`blablabla.com.*`" in the "pattern" section and "`www.blablabla.com`" in the substitution section.
 
-#### Examples
-*Remote start-time specifier from YouTube URLs (like `https://youtube.com/watch=xxxx&t=5s`)*
+#### Common Replacement Patterns
+##### Remove Header/Section Bookmarks For Google Docs
+Google Docs uses URL query parameters (after a `?`) instead of fragment markers (after a `#`) to jump you to sections in a document.
+This is not standard behaviour, and requires a custom pattern to address.
+```
+(docs.google.com/document/d/.*)\?.*`$1
+```
+
+##### Remove start-time specifier from YouTube URLs
+```
+^(.*youtube\.com/.*)&t=.*`$1
+```
+
+#### Detailed Replacement Examples
+##### Remove start-time specifier from YouTube URLs (like `https://youtube.com/watch=xxxx&t=5s`)
 
 ```
 ^(.*youtube\.com/.*)&t=.*`$1
